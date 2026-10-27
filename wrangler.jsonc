@@ -18,6 +18,7 @@
   "routes": [
     {
       "pattern": "meals.amirfamily.org",
+      "zone_name": "amirfamily.org",
       "custom_domain": true
     }
   ],
