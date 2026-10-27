@@ -1,0 +1,87 @@
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --bg: #f7f3ec;
+  --surface: #fffdf9;
+  --surface-2: #fbf7f0;
+  --sunken: #f1ebe0;
+  --sidebar: #faf6ef;
+  --border: #e7dfd1;
+  --border-strong: #d5cab8;
+  --text: #28241d;
+  --muted: #7b7263;
+  --faint: #a29888;
+
+  --accent: #c4552f;
+  --accent-hover: #ad4725;
+  --accent-ink: #8d3a20;
+  --accent-soft: #f7e5dc;
+  --on-accent: #fffaf4;
+
+  --green: #3d5c46;
+  --green-ink: #2f4a3a;
+  --green-soft: #e7ede5;
+
+  --butter: #e8c57f;
+  --butter-soft: #f8eed4;
+
+  --danger: #b23a2b;
+  --danger-soft: #fbe7e3;
+
+  --slot-breakfast: #d8a23f;
+  --slot-lunch: #6f8f5d;
+  --slot-dinner: #c4552f;
+  --slot-snack: #9878b5;
+
+  --shadow-sm: 0 1px 2px rgba(40, 36, 29, 0.05), 0 6px 16px -12px rgba(40, 36, 29, 0.25);
+  --shadow-md: 0 2px 4px rgba(40, 36, 29, 0.04), 0 18px 44px -26px rgba(40, 36, 29, 0.35);
+  --shadow-lg: 0 4px 10px rgba(40, 36, 29, 0.06), 0 40px 90px -40px rgba(40, 36, 29, 0.45);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+
+  --sidebar-width: 250px;
+  --page-max: 1280px;
+}
+
+html[data-theme='dark'] {
+  --bg: #161310;
+  --surface: #1e1a16;
+  --surface-2: #23201a;
+  --sunken: #27221c;
+  --sidebar: #191612;
+  --border: #332d25;
+  --border-strong: #453d32;
+  --text: #f2ebdd;
+  --muted: #a89d8c;
+  --faint: #7e7365;
+
+  --accent: #e0714a;
+  --accent-hover: #ec815c;
+  --accent-ink: #f0a486;
+  --accent-soft: #34231c;
+  --on-accent: #1b110c;
+
+  --green: #8fb396;
+  --green-ink: #b7d2bb;
+  --green-soft: #222d24;
+
+  --butter: #e2bf7a;
+  --butter-soft: #2d2618;
+
+  --danger: #e3776a;
+  --danger-soft: #35201d;
+
+  --slot-breakfast: #e0b25c;
+  --slot-lunch: #96b384;
+  --slot-dinner: #e0714a;
+  --slot-snack: #b294c9;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -16px rgba(0, 0, 0, 0.8);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.3), 0 22px 48px -28px rgba(0, 0, 0, 0.9);
+  --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.35), 0 44px 100px -44px rgba(0, 0, 0, 0.95);
+}

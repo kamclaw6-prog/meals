@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mise">
+  <rect width="64" height="64" rx="15" fill="#c4552f"/>
+  <path d="M14 36h36c0 9.4-7.6 17-17.9 17S14 45.4 14 36Z" fill="#faf6ee"/>
+  <path d="M10 36h44" stroke="#faf6ee" stroke-width="4" stroke-linecap="round"/>
+  <path d="M26 26c-3.8-2.6-3.8-6.4 0-9M33 26c-3.8-2.6-3.8-6.4 0-9M40 26c-3.8-2.6-3.8-6.4 0-9" stroke="#faf6ee" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+</svg>

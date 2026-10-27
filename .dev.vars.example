@@ -1,0 +1,22 @@
+# Local development only. Copy to .dev.vars (git-ignored).
+
+# Demo mode runs the whole app with an in-memory data store and a fake user.
+# Great for a first look — no GitHub OAuth app or data repo required.
+DEMO_MODE=true
+
+# Used to encrypt the session cookie. Generate with:
+#   openssl rand -base64 48
+SESSION_SECRET=replace-me-with-a-long-random-string
+
+# --- Real GitHub auth (set DEMO_MODE=false) -------------------------------
+# Create an OAuth app at https://github.com/settings/developers
+#   Homepage URL:             http://localhost:8787
+#   Authorization callback:   http://localhost:8787/api/auth/callback
+# GITHUB_CLIENT_ID=
+# GITHUB_CLIENT_SECRET=
+# Optional: pin every user to one data repo (owner/name).
+# DATA_REPO=
+# Optional: branch to read/write (default: main)
+# GITHUB_DATA_BRANCH=main
+# Optional: OAuth scope (default: repo, needed for private data repos)
+# GITHUB_OAUTH_SCOPE=repo

@@ -1,0 +1,47 @@
+name: Deploy
+
+# Manual by design: deploying changes your live Worker and data repo settings.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify before shipping
+        run: |
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Reminder
+        run: |
+          echo "Secrets are managed with 'wrangler secret put' (SESSION_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)."
+          echo "Update your GitHub OAuth callback URL if the deployed origin changed."

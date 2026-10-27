@@ -1,0 +1,17 @@
+{
+  "name": "Mise — meal planning",
+  "short_name": "Mise",
+  "description": "Plan the week, cook from your recipe box, and shop once. Data lives in your GitHub repository.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f3ec",
+  "theme_color": "#c4552f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
