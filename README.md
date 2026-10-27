@@ -203,7 +203,7 @@ GitHub’s file reads are cached in the Worker isolate for a few seconds to stay
 
 - Static assets live in `dist/` and are served with `not_found_handling: single-page-application`. Only `/api/*` runs the Worker first, so assets are served straight from Cloudflare’s edge.
 - `/assets/*` is cached immutably; `index.html` is always revalidated.
-- To use a custom domain, add a route or custom domain in the Cloudflare dashboard and update the OAuth callback URL to match.
+- To use a custom domain, declare it under `routes` in `wrangler.jsonc` with `"custom_domain": true` (or add it in the dashboard), remove any placeholder DNS record for that hostname first, then update the OAuth app’s homepage and callback URLs to the custom domain.
 - Rotate `SESSION_SECRET` if it leaks — this invalidates all sessions but touches no user data.
 - `DEMO_MODE=true` should never be enabled on a public deployment; it shows shared in-memory data to every visitor.
 

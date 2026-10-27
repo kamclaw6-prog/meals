@@ -12,6 +12,15 @@
   "observability": {
     "enabled": true
   },
+  // Attaches the Worker to the custom hostname on deploy. Cloudflare creates
+  // the proxied DNS record and certificate automatically. The hostname must
+  // have no other DNS record or Worker route before the first deploy.
+  "routes": [
+    {
+      "pattern": "meals.amirfamily.org",
+      "custom_domain": true
+    }
+  ],
   "vars": {
     "DEMO_MODE": "false"
   }
