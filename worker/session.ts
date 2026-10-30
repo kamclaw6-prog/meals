@@ -25,16 +25,26 @@ function base64UrlToBytes(value: string): Uint8Array {
   return bytes;
 }
 
-function requireSecret(env: Env): string {
+export const MIN_SECRET_LENGTH = 24;
+
+export function hasSessionSecret(env: Pick<Env, 'SESSION_SECRET'>): boolean {
   const secret = env.SESSION_SECRET;
-  if (!secret || secret.length < 24) {
+  return typeof secret === 'string' && secret.length >= MIN_SECRET_LENGTH;
+}
+
+export function assertSessionSecret(env: Env): void {
+  if (!hasSessionSecret(env)) {
     throw new ApiError(
       500,
       'CONFIG',
       'SESSION_SECRET is missing or too short. Set a random value of at least 32 characters.',
     );
   }
-  return secret;
+}
+
+function requireSecret(env: Env): string {
+  assertSessionSecret(env);
+  return env.SESSION_SECRET as string;
 }
 
 async function sessionKey(secret: string): Promise<CryptoKey> {

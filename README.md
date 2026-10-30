@@ -207,6 +207,29 @@ GitHub’s file reads are cached in the Worker isolate for a few seconds to stay
 - Rotate `SESSION_SECRET` if it leaks — this invalidates all sessions but touches no user data.
 - `DEMO_MODE=true` should never be enabled on a public deployment; it shows shared in-memory data to every visitor.
 
+## Troubleshooting sign-in
+
+`GET /api/health` reports two flags:
+
+```json
+{ "ok": true, "demo": false, "authConfigured": true, "sessionConfigured": true }
+```
+
+- `authConfigured: false` → `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` are missing on the Worker serving this hostname.
+- `sessionConfigured: false` → `SESSION_SECRET` is missing or shorter than 24 characters, so sessions cannot be created and the callback fails with “We could not finish signing you in.”
+
+Wrangler writes secrets to **one account at a time**. `wrangler.jsonc` pins both `name` and `account_id`, so a deploy can no longer create a new Worker by accident. If `wrangler whoami` shows a different account, `wrangler deploy` will fail loudly instead of silently updating an unused Worker. Check the result:
+
+```bash
+npx wrangler whoami                 # should report the account in wrangler.jsonc
+npx wrangler secret list            # GITHUB_CLIENT_SECRET, SESSION_SECRET
+curl -s https://<your-host>/api/health
+```
+
+Plain-text variables added in the dashboard are **replaced** by `vars` in `wrangler.jsonc` on the next deploy, so keep every non-secret binding in the config file. Only `GITHUB_CLIENT_SECRET` and `SESSION_SECRET` live in Cloudflare as secrets.
+
+Failures in the OAuth callback are logged with a `[mise] GitHub sign-in failed` prefix and surfaced as a specific `?error=` code (`session_secret`, `github_failed`, `exchange_failed`, `invalid_state`), which `wrangler tail` will show while you retry the flow.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).

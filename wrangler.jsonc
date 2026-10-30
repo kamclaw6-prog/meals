@@ -1,6 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mise",
+  // Must match the Worker that owns the custom domain. Renaming this deploys a
+  // brand-new Worker and leaves the live one untouched.
+  "name": "meals",
+  "account_id": "be6bb19e0b5ad8f05e426a5a8c339ba0",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-26",
   "assets": {
@@ -23,6 +26,9 @@
     }
   ],
   "vars": {
-    "DEMO_MODE": "false"
+    "DEMO_MODE": "false",
+    // Public client id of the GitHub OAuth app (not a secret). Keeping it here
+    // means `wrangler deploy` never drops it; GITHUB_CLIENT_SECRET stays a secret.
+    "GITHUB_CLIENT_ID": "Ov23liPIhWyDD36o6jA7"
   }
 }

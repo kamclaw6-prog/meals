@@ -7,7 +7,7 @@ import { authRoutes } from './auth';
 import { repoRoutes } from './repo';
 import { GitHubError } from './github';
 import { readJson, apiErrorBody } from './http';
-import { demoSession, readSession, requireSession } from './session';
+import { demoSession, hasSessionSecret, readSession, requireSession } from './session';
 import {
   listsFile,
   parseListsFile,
@@ -62,6 +62,7 @@ app.get('/api/health', (c) =>
     ok: true,
     demo: isDemo(c.env),
     authConfigured: Boolean(c.env.GITHUB_CLIENT_ID && c.env.GITHUB_CLIENT_SECRET),
+    sessionConfigured: hasSessionSecret(c.env),
   }),
 );
 

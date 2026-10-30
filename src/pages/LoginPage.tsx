@@ -19,6 +19,10 @@ const ERROR_MESSAGES: Record<string, string> = {
   invalid_state: 'That sign-in link expired or was already used. Please start again.',
   exchange_failed: 'GitHub did not return an access token. Please try signing in again.',
   signin_failed: 'We could not finish signing you in. Please try again.',
+  github_failed: 'GitHub refused the sign-in request. Please try again in a moment.',
+  login_failed: 'We could not reach GitHub to start signing you in. Please try again.',
+  session_secret:
+    'This deployment cannot create sessions yet: SESSION_SECRET is missing or shorter than 24 characters. Run "npx wrangler secret put SESSION_SECRET" on the account that hosts this site, then reload.',
   not_configured:
     'GitHub sign-in is not configured on this deployment yet. Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET, then reload.',
 };

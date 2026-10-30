@@ -1,8 +1,9 @@
 import { Hono } from 'hono';
-import { getAuthenticatedUser } from './github';
+import { getAuthenticatedUser, GitHubError } from './github';
 import type { AppEnv } from './env';
 import { ApiError, isDemo } from './env';
 import {
+  assertSessionSecret,
   buildSession,
   clearSession,
   clearStateCookie,
@@ -39,6 +40,20 @@ function safeReturnTo(value: string | null): string {
   return value;
 }
 
+/**
+ * Turns a failure raised while starting or finishing GitHub sign-in into a
+ * `?error=` code the login page understands. Configuration problems get their
+ * own code so they do not look like a transient GitHub hiccup.
+ */
+function authErrorCode(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (error.code === 'CONFIG') return 'session_secret';
+    if (error.code === 'AUTH_NOT_CONFIGURED') return 'not_configured';
+  }
+  if (error instanceof GitHubError) return 'github_failed';
+  return 'signin_failed';
+}
+
 function redirectUri(env: AppEnv['Bindings'], requestUrl: string): string {
   return env.OAUTH_REDIRECT_URL?.trim() || `${new URL(requestUrl).origin}/api/auth/callback`;
 }
@@ -47,6 +62,7 @@ authRoutes.get('/login', async (c) => {
   if (isDemo(c.env)) return c.redirect('/');
 
   try {
+    assertSessionSecret(c.env);
     const config = oauthConfig(c);
     const state = randomState();
     const returnTo = safeReturnTo(c.req.query('returnTo') ?? '/');
@@ -60,8 +76,8 @@ authRoutes.get('/login', async (c) => {
     authorize.searchParams.set('allow_signup', 'true');
     return c.redirect(authorize.toString());
   } catch (error) {
-    const code = error instanceof ApiError ? 'not_configured' : 'login_failed';
-    return c.redirect(`/login?error=${code}`);
+    console.error('[mise] could not start GitHub sign-in', error);
+    return c.redirect(`/login?error=${authErrorCode(error)}`);
   }
 });
 
@@ -92,6 +108,7 @@ authRoutes.get('/callback', async (c) => {
   if (!timingSafeEqual) return c.redirect('/login?error=invalid_state');
 
   try {
+    assertSessionSecret(c.env);
     const config = oauthConfig(c);
     const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -125,8 +142,11 @@ authRoutes.get('/callback', async (c) => {
     });
     await writeSessionCookie(c, session);
     return c.redirect(returnTo);
-  } catch {
-    return c.redirect('/login?error=signin_failed');
+  } catch (error) {
+    // Without this the real cause (a bad GitHub response, a missing secret, a
+    // crypto failure) disappears behind the generic "try again" message.
+    console.error('[mise] GitHub sign-in failed', error);
+    return c.redirect(`/login?error=${authErrorCode(error)}`);
   }
 });
 
